@@ -61,7 +61,7 @@ type AdvancedConfig struct {
 	QueryFrontendMemcached *CacheConfig `json:"queryFrontendMemcached,omitempty"`
 	// Spec of observatorium api
 	// +optional
-	ObservatoriumAPI *CommonSpec `json:"observatoriumAPI,omitempty"`
+	ObservatoriumAPI *ObservatoriumAPISpec `json:"observatoriumAPI,omitempty"`
 	// spec for thanos-query-frontend
 	// +optional
 	QueryFrontend *CommonSpec `json:"queryFrontend,omitempty"`
@@ -96,6 +96,19 @@ type CompactSpec struct {
 	// Compute Resources required by the compact.
 	// +optional
 	Resources *corev1.ResourceRequirements `json:"resources,omitempty"`
+}
+
+// Observatorium API Gateway Spec
+type ObservatoriumAPISpec struct {
+	// Additional write endpoint besides the thanos.
+	// +optional
+	AdditionalWriteEndpoint string `json:"additionalWriteEndpoint,omitempty"`
+	// Compute Resources required by this component.
+	// +optional
+	Resources *corev1.ResourceRequirements `json:"resources,omitempty"`
+	// Replicas for this component.
+	// +optional
+	Replicas *int32 `json:"replicas,omitempty"`
 }
 
 // CacheConfig is the spec of memcached.

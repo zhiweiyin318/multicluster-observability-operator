@@ -12,7 +12,7 @@ require (
 	github.com/openshift/client-go v0.0.0-20201214125552-e615e336eb49
 	github.com/stolostron/multicloud-operators-placementrule v0.0.0-20220113003548-6d97a1d71270
 	github.com/stolostron/multiclusterhub-operator v0.0.0-20220111203209-4882a2b93f0f
-	github.com/stolostron/observatorium-operator v0.0.0-20220112145421-f8fa289f2a90
+	github.com/stolostron/observatorium-operator v0.0.0-20220209010706-c575ffcc5c16
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.21.1
 	k8s.io/apiextensions-apiserver v0.21.1

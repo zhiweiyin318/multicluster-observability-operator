@@ -1715,6 +1715,8 @@ github.com/stolostron/multiclusterhub-operator v0.0.0-20220111203209-4882a2b93f0
 github.com/stolostron/multiclusterhub-operator v0.0.0-20220111203209-4882a2b93f0f/go.mod h1:iKow3tj3j8B4al2v4agj/ePBVVh8phRrPDj/MkWqT9c=
 github.com/stolostron/observatorium-operator v0.0.0-20220112145421-f8fa289f2a90 h1:BJMkKy1PhPiQGH7wmRajT3ogXpd8+jXYT856waOCo80=
 github.com/stolostron/observatorium-operator v0.0.0-20220112145421-f8fa289f2a90/go.mod h1:zhYELNjxIxZ9mT6bhdRftOI5XIThI4hQJwuR8/ZlOHg=
+github.com/stolostron/observatorium-operator v0.0.0-20220209010706-c575ffcc5c16 h1:hgIwM/TdR3BeB2fFnrJsbBmKbk3UNQXZMhCda4ihSjE=
+github.com/stolostron/observatorium-operator v0.0.0-20220209010706-c575ffcc5c16/go.mod h1:zhYELNjxIxZ9mT6bhdRftOI5XIThI4hQJwuR8/ZlOHg=
 github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/handy v0.0.0-20190108123426-d5acb3125c2a/go.mod h1:qNTQ5P5JnDBl6z3cMAg/SywNDC5ABu5ApDIw6lUbRmI=

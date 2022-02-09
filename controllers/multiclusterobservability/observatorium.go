@@ -332,6 +332,10 @@ func newAPISpec(mco *mcov1beta2.MultiClusterObservability) obsv1alpha1.APISpec {
 		apiSpec.Image = image
 	}
 	apiSpec.ServiceMonitor = true
+	if mco.Spec.AdvancedConfig != nil && mco.Spec.AdvancedConfig.ObservatoriumAPI != nil &&
+		mco.Spec.AdvancedConfig.ObservatoriumAPI.AdditionalWriteEndpoint != "" {
+		apiSpec.AdditionalWriteEndpoint = mco.Spec.AdvancedConfig.ObservatoriumAPI.AdditionalWriteEndpoint
+	}
 	return apiSpec
 }
 

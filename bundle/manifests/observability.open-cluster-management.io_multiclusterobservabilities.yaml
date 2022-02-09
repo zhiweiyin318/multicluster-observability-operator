@@ -324,6 +324,9 @@ spec:
                   observatoriumAPI:
                     description: Spec of observatorium api
                     properties:
+                      additionalWriteEndpoint:
+                        description: Additioinal write endpoint besides the thanos
+                        type: string
                       replicas:
                         description: Replicas for this component.
                         format: int32
