@@ -6,6 +6,7 @@ package multiclusterobservability
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -14,7 +15,7 @@ import (
 	obsv1alpha1 "github.com/stolostron/observatorium-operator/api/v1alpha1"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/errors"
+	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -54,13 +55,17 @@ func GenerateObservatoriumCR(
 
 	log.Info("storageClassSelected", "storageClassSelected", storageClassSelected)
 
+	obsSpec, err := newDefaultObservatoriumSpec(cl, mco, storageClassSelected)
+	if err != nil {
+		return &ctrl.Result{}, err
+	}
 	observatoriumCR := &obsv1alpha1.Observatorium{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      mcoconfig.GetOperandName(mcoconfig.Observatorium),
 			Namespace: mcoconfig.GetDefaultNamespace(),
 			Labels:    labels,
 		},
-		Spec: *newDefaultObservatoriumSpec(mco, storageClassSelected),
+		Spec: *obsSpec,
 	}
 
 	// Set MultiClusterObservability instance as the owner and controller
@@ -79,7 +84,7 @@ func GenerateObservatoriumCR(
 		observatoriumCRFound,
 	)
 
-	if err != nil && errors.IsNotFound(err) {
+	if err != nil && k8serrors.IsNotFound(err) {
 		log.Info("Creating a new observatorium CR",
 			"observatorium", observatoriumCR.Name,
 		)
@@ -183,7 +188,7 @@ func GenerateAPIGatewayRoute(
 		context.TODO(),
 		types.NamespacedName{Name: apiGateway.Name, Namespace: apiGateway.Namespace},
 		&routev1.Route{})
-	if err != nil && errors.IsNotFound(err) {
+	if err != nil && k8serrors.IsNotFound(err) {
 		log.Info("Creating a new route to expose observatorium api",
 			"apiGateway.Namespace", apiGateway.Namespace,
 			"apiGateway.Name", apiGateway.Name,
@@ -197,15 +202,19 @@ func GenerateAPIGatewayRoute(
 	return nil, nil
 }
 
-func newDefaultObservatoriumSpec(mco *mcov1beta2.MultiClusterObservability,
-	scSelected string) *obsv1alpha1.ObservatoriumSpec {
+func newDefaultObservatoriumSpec(cl client.Client, mco *mcov1beta2.MultiClusterObservability,
+	scSelected string) (*obsv1alpha1.ObservatoriumSpec, error) {
 
 	obs := &obsv1alpha1.ObservatoriumSpec{}
 	obs.SecurityContext = &v1.SecurityContext{}
 	obs.PullSecret = mcoconfig.GetImagePullSecret(mco.Spec)
 	obs.NodeSelector = mco.Spec.NodeSelector
 	obs.Tolerations = mco.Spec.Tolerations
-	obs.API = newAPISpec(mco)
+	obsApi, err := newAPISpec(cl, mco)
+	if err != nil {
+		return obs, err
+	}
+	obs.API = obsApi
 	obs.Thanos = newThanosSpec(mco, scSelected)
 	if util.ProxyEnvVarsAreSet() {
 		obs.EnvVars = newEnvVars()
@@ -221,7 +230,7 @@ func newDefaultObservatoriumSpec(mco *mcov1beta2.MultiClusterObservability,
 		obs.ObjectStorageConfig.Thanos.Name = objStorageConf.Name
 		obs.ObjectStorageConfig.Thanos.Key = objStorageConf.Key
 	}
-	return obs
+	return obs, nil
 }
 
 // return proxy variables
@@ -314,7 +323,7 @@ func newAPITLS() obsv1alpha1.TLS {
 	}
 }
 
-func newAPISpec(mco *mcov1beta2.MultiClusterObservability) obsv1alpha1.APISpec {
+func newAPISpec(cl client.Client, mco *mcov1beta2.MultiClusterObservability) (obsv1alpha1.APISpec, error) {
 	apiSpec := obsv1alpha1.APISpec{}
 	apiSpec.RBAC = newAPIRBAC()
 	apiSpec.Tenants = newAPITenants()
@@ -331,7 +340,34 @@ func newAPISpec(mco *mcov1beta2.MultiClusterObservability) obsv1alpha1.APISpec {
 		apiSpec.Image = image
 	}
 	apiSpec.ServiceMonitor = true
-	return apiSpec
+	if mco.Spec.StorageConfig.WriteStorage != nil {
+		var eps []obsv1alpha1.Endpoint
+		for _, config := range mco.Spec.StorageConfig.WriteStorage {
+			storageSecret := &v1.Secret{}
+			err := cl.Get(context.TODO(), types.NamespacedName{Name: config.Name, Namespace: mcoconfig.GetDefaultNamespace()}, storageSecret)
+			if err != nil {
+				log.Error(err, "Failed to get the secret", "name", config.Name)
+				return apiSpec, err
+			} else {
+				data, ok := storageSecret.Data[config.Key]
+				if !ok {
+					log.Error(err, "Invalid key in secret", "name", config.Name, "key", config.Key)
+					return apiSpec, errors.New(fmt.Sprintf("Invalid key %s in secret %s", config.Key, config.Name))
+				}
+				ep := &obsv1alpha1.Endpoint{}
+				err = yaml.Unmarshal(data, ep)
+				if err != nil {
+					log.Error(err, "Failed to unmarshal data in secret", "name", config.Name)
+					return apiSpec, err
+				}
+				eps = append(eps, *ep)
+			}
+		}
+		if len(eps) > 0 {
+			apiSpec.AdditionalWriteEndpoints = eps
+		}
+	}
+	return apiSpec, nil
 }
 
 func newReceiversSpec(
@@ -670,7 +706,7 @@ func deleteStoreSts(cl client.Client, name string, oldNum int32, newNum int32) e
 			found := &appsv1.StatefulSet{}
 			err := cl.Get(context.TODO(), types.NamespacedName{Name: stsName, Namespace: mcoconfig.GetDefaultNamespace()}, found)
 			if err != nil {
-				if !errors.IsNotFound(err) {
+				if !k8serrors.IsNotFound(err) {
 					log.Error(err, "Failed to get statefulset", "name", stsName)
 					return err
 				}

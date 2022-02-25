@@ -1736,7 +1736,6 @@ github.com/matoous/godox v0.0.0-20190910121045-032ad8106c86/go.mod h1:1BELzlh859
 github.com/matoous/godox v0.0.0-20190911065817-5d6d842e92eb/go.mod h1:1BELzlh859Sh1c6+90blK8lbYy0kwQf1bYlBhBysy1s=
 github.com/matoous/godox v0.0.0-20200801072554-4fb83dc2941e/go.mod h1:1BELzlh859Sh1c6+90blK8lbYy0kwQf1bYlBhBysy1s=
 github.com/matryer/moq v0.0.0-20190312154309-6cfb0558e1bd/go.mod h1:9ELz6aaclSIGnZBoaSLZ3NAl1VTufbOrXBPvtcy6WiQ=
-github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a h1:+J2gw7Bw77w/fbK7wnNJJDKmw1IbWft2Ul5BzrG1Qm8=
 github.com/mattbaird/jsonpatch v0.0.0-20171005235357-81af80346b1a/go.mod h1:M1qoD/MqPgTZIk0EWKB38wE28ACRfVcn+cU08jyArI0=
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
 github.com/mattn/go-colorable v0.1.1/go.mod h1:FuOcm+DKB9mbwrcAfNl7/TZVBZ6rcnceauSikq3lYCQ=
@@ -2451,8 +2450,8 @@ github.com/stolostron/multicloud-operators-foundation v0.0.0-20220112005209-c7d6
 github.com/stolostron/multicloud-operators-foundation v0.0.0-20220112005209-c7d642306a99/go.mod h1:OGgYyIj05jrIlLYF+oczqidvHLKPEdum/fN0aLBjPhQ=
 github.com/stolostron/multiclusterhub-operator v0.0.0-20220111203209-4882a2b93f0f h1:HJ286o7ylkYi3vhycfxz17yZQ/GZtCbihaZogGavDbo=
 github.com/stolostron/multiclusterhub-operator v0.0.0-20220111203209-4882a2b93f0f/go.mod h1:iKow3tj3j8B4al2v4agj/ePBVVh8phRrPDj/MkWqT9c=
-github.com/stolostron/observatorium-operator v0.0.0-20220112075017-39be85036799 h1:eQz6z2yAT4guRBUxwHaYxSeWB2yFhMgLHOHPjZih2rs=
-github.com/stolostron/observatorium-operator v0.0.0-20220112075017-39be85036799/go.mod h1:3TfJn5Ot5u8q2aSag1tw3vlqlM6U4Gut3ktydX1ZoBQ=
+github.com/stolostron/observatorium-operator v0.0.0-20220224070009-18e64e4f74fe h1:qTi5Fp5EJvHk6TsqUsu4Y1lw7yLOPW0SKqS0Efmeyfs=
+github.com/stolostron/observatorium-operator v0.0.0-20220224070009-18e64e4f74fe/go.mod h1:3TfJn5Ot5u8q2aSag1tw3vlqlM6U4Gut3ktydX1ZoBQ=
 github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/amqp v1.0.0/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=

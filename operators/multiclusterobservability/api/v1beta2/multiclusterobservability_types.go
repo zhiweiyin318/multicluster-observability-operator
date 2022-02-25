@@ -155,6 +155,9 @@ type StorageConfig struct {
 	// Object store config secret for metrics
 	// +required
 	MetricObjectStorage *observabilityshared.PreConfiguredStorage `json:"metricObjectStorage"`
+	// WriteStorage storage config secret list for metrics
+	// +optional
+	WriteStorage []*observabilityshared.PreConfiguredStorage `json:"writeStorage,omitempty"`
 	// Specify the storageClass Stateful Sets. This storage class will also
 	// be used for Object Storage if MetricObjectStorage was configured for
 	// the system to create the storage.
