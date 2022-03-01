@@ -120,7 +120,7 @@ func GenerateObservatoriumCR(
 	newObj.Spec = newSpec
 	err = cl.Update(context.TODO(), newObj)
 	if err != nil {
-		log.Error(err, "Failed to update observatorium CR %s", observatoriumCR.Name)
+		log.Error(err, "Failed to update observatorium CR %s", "name", observatoriumCR.Name)
 		// add timeout for update failure avoid update conflict
 		return &ctrl.Result{RequeueAfter: time.Second * 3}, err
 	}
@@ -360,6 +360,7 @@ func newAPISpec(cl client.Client, mco *mcov1beta2.MultiClusterObservability) (ob
 					log.Error(err, "Failed to unmarshal data in secret", "name", config.Name)
 					return apiSpec, err
 				}
+				ep.Name = config.Name
 				eps = append(eps, *ep)
 			}
 		}
