@@ -6,6 +6,7 @@ data:
   metrics_list.yaml: |
     names:
       - :node_memory_MemAvailable_bytes:sum
+      - acm_remote_write_requests_total
       - ALERTS
       - authenticated_user_requests
       - authentication_attempts
