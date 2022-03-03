@@ -2456,6 +2456,8 @@ github.com/stolostron/observatorium-operator v0.0.0-20220303015239-dad875afa23e 
 github.com/stolostron/observatorium-operator v0.0.0-20220303015239-dad875afa23e/go.mod h1:zL3DECPxrkOfRt8ptDFHbdvNWPoQXDZTywvRU41xv+Y=
 github.com/stolostron/observatorium-operator v0.0.0-20220303020438-aaa60f9c8162 h1:wQoO7iCNt2JgA+pgoBzcg0DnNy1r0xUkHzYTQ6qQxsI=
 github.com/stolostron/observatorium-operator v0.0.0-20220303020438-aaa60f9c8162/go.mod h1:zL3DECPxrkOfRt8ptDFHbdvNWPoQXDZTywvRU41xv+Y=
+github.com/stolostron/observatorium-operator v0.0.0-20220303065154-93d158e65f96 h1:84+ZJx/FC+l15+wLA2b5/tRyQSZqnGofiJyu/8V2pWA=
+github.com/stolostron/observatorium-operator v0.0.0-20220303065154-93d158e65f96/go.mod h1:zL3DECPxrkOfRt8ptDFHbdvNWPoQXDZTywvRU41xv+Y=
 github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/amqp v1.0.0/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=

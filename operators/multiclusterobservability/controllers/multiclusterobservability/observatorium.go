@@ -426,7 +426,9 @@ func newAPISpec(c client.Client, mco *mcov1beta2.MultiClusterObservability) (obs
 			return apiSpec, err
 		}
 		if len(eps) > 0 {
-			apiSpec.AdditionalWriteEndpoints.EndpointsConfigSecret = endpointsConfigName
+			apiSpec.AdditionalWriteEndpoints = &obsv1alpha1.EndpointsConfig{
+				EndpointsConfigSecret: endpointsConfigName,
+			}
 			if len(mountSecrets) > 0 {
 				apiSpec.AdditionalWriteEndpoints.MountSecrets = mountSecrets
 			}
