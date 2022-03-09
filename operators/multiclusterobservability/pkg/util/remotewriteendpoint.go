@@ -1,13 +1,12 @@
 package util
 
 import (
-	"fmt"
 	"path"
 
 	"github.com/prometheus/common/config"
 )
 
-const mountPath = "/var/run/secrets/%s"
+const MountPath = "/var/run/secrets/"
 
 type TLSConfigWithSecret struct {
 	// Name of the secret which contains the file
@@ -92,7 +91,7 @@ type RemoteWriteEndpoint struct {
 }
 
 func getMountPath(secretName, key string) string {
-	return path.Join(fmt.Sprintf(mountPath, secretName), key)
+	return path.Join(MountPath, secretName, key)
 }
 
 func transformBasicAuth(old BasicAuthWithSecret) *config.BasicAuth {
