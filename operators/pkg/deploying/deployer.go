@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"strings"
 
+	prometheusv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -43,6 +44,7 @@ func NewDeployer(client client.Client) *Deployer {
 		"Secret":             deployer.updateSecret,
 		"ClusterRole":        deployer.updateClusterRole,
 		"ClusterRoleBinding": deployer.updateClusterRoleBinding,
+		"PrometheusRule":     deployer.updatePrometheusRule,
 	}
 	return deployer
 }
@@ -240,6 +242,28 @@ func (d *Deployer) updateClusterRoleBinding(desiredObj, runtimeObj *unstructured
 		!apiequality.Semantic.DeepDerivative(desiredClusterRoleBinding.RoleRef, runtimeClusterRoleBinding.RoleRef) {
 		log.Info("Update", "Kind:", desiredObj.GroupVersionKind(), "Name:", desiredObj.GetName())
 		return d.client.Update(context.TODO(), desiredClusterRoleBinding)
+	}
+	return nil
+}
+
+func (d *Deployer) updatePrometheusRule(desiredObj, runtimeObj *unstructured.Unstructured) error {
+	runtimeJSON, _ := runtimeObj.MarshalJSON()
+	runtimePrometheusRule := &prometheusv1.PrometheusRule{}
+	err := json.Unmarshal(runtimeJSON, runtimePrometheusRule)
+	if err != nil {
+		log.Error(err, fmt.Sprintf("Failed to Unmarshal runtime PrometheusRule  %s", runtimeObj.GetName()))
+	}
+
+	desiredJSON, _ := desiredObj.MarshalJSON()
+	desiredPrometheusRule := &prometheusv1.PrometheusRule{}
+	err = json.Unmarshal(desiredJSON, desiredPrometheusRule)
+	if err != nil {
+		log.Error(err, fmt.Sprintf("Failed to Unmarshal PrometheusRule  %s", runtimeObj.GetName()))
+	}
+
+	if !apiequality.Semantic.DeepDerivative(desiredPrometheusRule.Spec, runtimePrometheusRule.Spec) {
+		log.Info("Update", "Kind:", runtimeObj.GroupVersionKind(), "Name:", runtimeObj.GetName())
+		return d.client.Update(context.TODO(), desiredPrometheusRule)
 	}
 	return nil
 }

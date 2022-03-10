@@ -38,6 +38,7 @@ func NewRenderer() *Renderer {
 		"RoleBinding":           renderer.RenderNamespace,
 		"Ingress":               renderer.RenderNamespace,
 		"PersistentVolumeClaim": renderer.RenderNamespace,
+		"PrometheusRule":        renderer.RenderNamespace,
 	}
 	return renderer
 }
